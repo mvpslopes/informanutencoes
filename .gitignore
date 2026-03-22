@@ -1,0 +1,17 @@
+# Vite / React (app/)
+app/node_modules/
+app/dist/
+app/dist-ssr/
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
