@@ -1,6 +1,7 @@
 const WHATSAPP_NUMBER = '5531975221824'
 const WHATSAPP_MSG = encodeURIComponent('Olá! Vim pelo site da Infor Manutenções e gostaria de solicitar um orçamento.')
-const INSTAGRAM = 'thiagocebox'
+const INSTAGRAM_URL = 'https://www.instagram.com/informanutencoes/'
+const INSTAGRAM_HANDLE = 'informanutencoes'
 
 export default function Footer() {
   return (
@@ -34,7 +35,7 @@ export default function Footer() {
                   <WhatsAppIcon />
                 </a>
                 <a
-                  href={`https://instagram.com/${INSTAGRAM}`}
+                  href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-white/10 hover:bg-pink-500/20 border border-white/10 hover:border-pink-500/30 rounded-xl flex items-center justify-center text-white/60 hover:text-pink-400 transition-all duration-200"
@@ -87,7 +88,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href={`https://instagram.com/${INSTAGRAM}`}
+                  href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 group"
@@ -97,7 +98,7 @@ export default function Footer() {
                   </div>
                   <div>
                     <div className="text-white/40 text-xs">Instagram</div>
-                    <div className="text-white font-semibold text-sm group-hover:text-pink-400 transition-colors">@{INSTAGRAM}</div>
+                    <div className="text-white font-semibold text-sm group-hover:text-pink-400 transition-colors">@{INSTAGRAM_HANDLE}</div>
                   </div>
                 </a>
               </div>

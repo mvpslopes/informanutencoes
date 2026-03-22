@@ -7,121 +7,47 @@ const WHATSAPP_NUMBER = '5531975221824'
 const img = (path, extra = '') =>
   `https://images.unsplash.com/${path}?auto=format&fit=crop&w=900&q=88${extra}`
 
+/** Catálogo real: apenas itens disponíveis para venda */
 const products = [
-  // Memórias — pentes de RAM
   {
     id: 'ddr4-8',
     category: 'Memórias RAM',
     name: 'Memória DDR4 8GB',
     price: 'R$ 219',
     priceNum: 219,
-    tag: 'Popular',
+    tag: 'Disponível',
     tagColor: '#25D366',
     image: img('photo-1562976540-1502c2145186', '&h=600'),
     imgPosition: 'center 42%',
-    desc: 'Ideal para uso cotidiano e multitarefa',
+    desc: 'Pente DDR4 8GB — instalação inclusa',
   },
-  {
-    id: 'ddr4-16',
-    category: 'Memórias RAM',
-    name: 'Memória DDR4 16GB',
-    price: 'R$ 349',
-    priceNum: 349,
-    tag: null,
-    tagColor: null,
-    image: img('photo-1591488320449-011701bb6704', '&h=600'),
-    imgPosition: 'center 52%',
-    desc: 'Melhor desempenho para edição e jogos',
-  },
-  {
-    id: 'ddr5-8',
-    category: 'Memórias RAM',
-    name: 'Memória DDR5 8GB',
-    price: 'R$ 569',
-    priceNum: 569,
-    tag: 'Novo',
-    tagColor: '#007BFF',
-    image: img('photo-1562976540-1502c2145186', '&h=600&sat=-25'),
-    imgPosition: 'center 38%',
-    desc: 'Tecnologia de última geração DDR5',
-  },
-  {
-    id: 'ddr5-32',
-    category: 'Memórias RAM',
-    name: 'Memória DDR5 32GB',
-    price: 'R$ 997',
-    priceNum: 997,
-    tag: 'High End',
-    tagColor: '#f59e0b',
-    image: img('photo-1591488320449-011701bb6704', '&h=600&sat=-20'),
-    imgPosition: 'center 48%',
-    desc: 'Máximo desempenho para workstations',
-  },
-  // SSDs — NVMe / armazenamento sólido
   {
     id: 'ssd-128',
     category: 'SSDs',
-    name: 'SSD M.2 ou mSATA 128GB',
+    name: 'SSD M.2 128GB',
     price: 'R$ 199',
     priceNum: 199,
-    tag: null,
-    tagColor: null,
-    image: img('photo-1625842268584-8f32962363c0', '&h=600'),
-    imgPosition: 'center 48%',
-    desc: 'Até 3× mais rápido que HD convencional',
+    tag: 'M.2',
+    tagColor: '#19A3B0',
+    image: '/ssd-m2.png',
+    imgPosition: 'center 50%',
+    desc: 'SSD formato M.2 — muito mais rápido que HD',
   },
   {
     id: 'ssd-240',
     category: 'SSDs',
-    name: 'SSD M.2 ou mSATA 240GB',
+    name: 'SSD M.2 240GB',
     price: 'R$ 329',
     priceNum: 329,
-    tag: 'Recomendado',
-    tagColor: '#19A3B0',
-    image: img('photo-1625842268584-8f32962363c0', '&h=600'),
-    imgPosition: '70% 45%',
-    desc: 'Melhor custo-benefício para o dia a dia',
-  },
-  // Componentes
-  {
-    id: 'jack',
-    category: 'Componentes',
-    name: 'Jack In / Conector SATA',
-    price: 'R$ 30',
-    priceNum: 30,
-    tag: 'Valor único',
-    tagColor: '#6366f1',
-    image: img('photo-1544197150-b99a580bb7a8', '&h=600'),
-    imgPosition: 'center 55%',
-    desc: 'Conector de áudio ou SATA para notebook',
-  },
-  {
-    id: 'camera',
-    category: 'Componentes',
-    name: 'Câmera Interna',
-    price: 'R$ 30',
-    priceNum: 30,
-    tag: 'Valor único',
-    tagColor: '#6366f1',
-    image: img('photo-1516035069371-29a1b244cc32', '&h=600'),
-    imgPosition: 'center 40%',
-    desc: 'Câmera frontal para notebook',
-  },
-  {
-    id: 'flat',
-    category: 'Componentes',
-    name: 'Jumper / Flat Cable',
-    price: 'R$ 30',
-    priceNum: 30,
-    tag: 'Valor único',
-    tagColor: '#6366f1',
-    image: img('photo-1518770660439-4636190af475', '&h=600'),
-    imgPosition: 'center 45%',
-    desc: 'Cabo flat ou jumper para teclado/tela',
+    tag: 'M.2',
+    tagColor: '#007BFF',
+    image: '/ssd-m2.png',
+    imgPosition: 'center 50%',
+    desc: 'SSD formato M.2 — melhor capacidade no dia a dia',
   },
 ]
 
-const categories = ['Todos', 'Memórias RAM', 'SSDs', 'Componentes']
+const categories = ['Todos', 'Memórias RAM', 'SSDs']
 
 export default function Upgrades() {
   const [activeTab, setActiveTab] = useState('Todos')
@@ -166,6 +92,10 @@ export default function Upgrades() {
               nossos Upgrades
             </span>
           </h2>
+          <p className="text-white/55 text-sm md:text-base max-w-lg mx-auto mb-5 leading-relaxed">
+            Peças disponíveis para venda: <strong className="text-white/90">memória DDR4 8GB</strong> e{' '}
+            <strong className="text-white/90">SSD M.2 128GB ou 240GB</strong>. Outros modelos sob consulta pelo WhatsApp.
+          </p>
           <div className="inline-flex items-center gap-2 bg-[#25D366]/20 border border-[#25D366]/30 text-[#25D366] font-semibold text-sm px-5 py-2 rounded-full">
             <CheckIcon />
             Instalação profissional já inclusa no valor da peça
