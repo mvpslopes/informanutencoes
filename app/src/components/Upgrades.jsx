@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
+import { apiUrl } from '../config.js'
 
 const WHATSAPP_NUMBER = '5531975221824'
 
@@ -7,8 +8,8 @@ const WHATSAPP_NUMBER = '5531975221824'
 const img = (path, extra = '') =>
   `https://images.unsplash.com/${path}?auto=format&fit=crop&w=900&q=88${extra}`
 
-/** Catálogo real: apenas itens disponíveis para venda */
-const products = [
+/** Fallback se a API não estiver disponível (Hostinger sem PHP configurado ou dev sem servidor) */
+const FALLBACK_PRODUCTS = [
   {
     id: 'ddr4-8',
     category: 'Memórias RAM',
@@ -53,6 +54,18 @@ export default function Upgrades() {
   const [activeTab, setActiveTab] = useState('Todos')
   const { addItem } = useCart()
   const [added, setAdded] = useState({})
+  const [products, setProducts] = useState(FALLBACK_PRODUCTS)
+
+  useEffect(() => {
+    fetch(apiUrl('public_products.php'))
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && Array.isArray(d.products) && d.products.length > 0) {
+          setProducts(d.products)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const filtered = activeTab === 'Todos' ? products : products.filter((p) => p.category === activeTab)
 

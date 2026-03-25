@@ -3,10 +3,16 @@ import { useEffect, useState } from 'react'
 export default function SplashScreen({ onFinish }) {
   const [phase, setPhase] = useState('enter') // enter | hold | exit
 
+  const EXIT_MS = 2200
+  const FADE_MS = 700
+
   useEffect(() => {
-    const hold  = setTimeout(() => setPhase('exit'),  2200)
-    const done  = setTimeout(() => onFinish(),        3000)
-    return () => { clearTimeout(hold); clearTimeout(done) }
+    const startExit = setTimeout(() => setPhase('exit'), EXIT_MS)
+    const removeSplash = setTimeout(() => onFinish(), EXIT_MS + FADE_MS)
+    return () => {
+      clearTimeout(startExit)
+      clearTimeout(removeSplash)
+    }
   }, [onFinish])
 
   return (

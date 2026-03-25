@@ -1,0 +1,4 @@
+# Permitir apenas arquivos estáticos (sem execução PHP)
+<FilesMatch "\.(php|phtml|php5)$">
+  Deny from all
+</FilesMatch>

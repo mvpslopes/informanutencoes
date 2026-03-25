@@ -1,41 +1,31 @@
-import { useState, useCallback } from 'react'
+import { useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
-import SplashScreen from './components/SplashScreen'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Servicos from './components/Servicos'
-import Upgrades from './components/Upgrades'
-import Diferenciais from './components/Diferenciais'
-import Footer from './components/Footer'
-import WhatsAppFloat from './components/WhatsAppFloat'
-import Cart from './components/Cart'
+import PublicSite from './pages/PublicSite'
+import CommentsPage from './pages/CommentsPage'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import { sendPageView } from './analytics.js'
 
-function App() {
-  const [splashDone, setSplashDone] = useState(false)
-  const handleFinish = useCallback(() => setSplashDone(true), [])
+function GoogleAnalyticsRouteTracker() {
+  const location = useLocation()
+  useEffect(() => {
+    sendPageView(location.pathname + location.search)
+  }, [location.pathname, location.search])
+  return null
+}
 
+export default function App() {
   return (
     <CartProvider>
-      {!splashDone && <SplashScreen onFinish={handleFinish} />}
-
-      <div
-        className={`min-h-screen transition-opacity duration-700 ${
-          splashDone ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <Header />
-        <main>
-          <Hero />
-          <Servicos />
-          <Upgrades />
-          <Diferenciais />
-        </main>
-        <Footer />
-        <WhatsAppFloat />
-        <Cart />
-      </div>
+      <GoogleAnalyticsRouteTracker />
+      <Routes>
+        <Route path="/" element={<PublicSite />} />
+        <Route path="/comentarios" element={<CommentsPage />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/painel" element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </CartProvider>
   )
 }
-
-export default App

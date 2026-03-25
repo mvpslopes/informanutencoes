@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 const WHATSAPP_NUMBER = '5531975221824'
@@ -8,6 +9,9 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { count, setIsOpen: openCart } = useCart()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+  const barSolid = scrolled || !isHome
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -15,29 +19,50 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const h = (hash) => (isHome ? hash : `/${hash}`)
+
   const navLinks = [
-    { label: 'Início', href: '#inicio' },
-    { label: 'Serviços', href: '#servicos' },
-    { label: 'Upgrades', href: '#upgrades' },
-    { label: 'Contato', href: '#contato' },
+    { label: 'Início', href: h('#inicio') },
+    { label: 'Serviços', href: h('#servicos') },
+    { label: 'Upgrades', href: h('#upgrades') },
+    { label: 'Avaliações', href: h('#avaliacoes') },
+    { label: 'Contato', href: h('#contato') },
   ]
+
+  const navLinkClass = () =>
+    `font-medium text-sm tracking-wide transition-colors duration-200 ${
+      barSolid ? 'text-gray-700 hover:text-[#007BFF]' : 'text-white/90 hover:text-white'
+    }`
+
+  const isAdminRoute = location.pathname.startsWith('/admin')
+
+  const panelLinkClass = () =>
+    `font-medium text-sm tracking-wide transition-colors duration-200 ${
+      isAdminRoute
+        ? barSolid
+          ? 'text-[#007BFF] font-semibold'
+          : 'text-white font-semibold'
+        : barSolid
+          ? 'text-gray-700 hover:text-[#007BFF]'
+          : 'text-white/90 hover:text-white'
+    }`
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        barSolid
           ? 'glass shadow-lg shadow-black/10 border-b border-white/30'
-          : 'bg-transparent'
+          : 'glass-dark shadow-lg shadow-black/20 border-b border-white/10'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <a href="#inicio" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img
             src="/logo.png"
             alt="Infor Manutenções"
-            className={`h-16 w-auto transition-all duration-300 ${scrolled ? '' : 'brightness-0 invert'}`}
+            className={`h-16 w-auto transition-all duration-300 ${barSolid ? '' : 'brightness-0 invert'}`}
           />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-7">
@@ -45,20 +70,33 @@ export default function Header() {
             <a
               key={link.href}
               href={link.href}
-              className={`font-medium text-sm tracking-wide transition-colors duration-200 ${
-                scrolled
-                  ? 'text-gray-700 hover:text-[#007BFF]'
-                  : 'text-white/90 hover:text-white'
-              }`}
+              className={navLinkClass()}
             >
               {link.label}
             </a>
           ))}
 
+          <Link
+            to="/admin"
+            title="Acesso restrito — login"
+            className={`${panelLinkClass()} inline-flex items-center gap-1.5`}
+          >
+            <LockIcon
+              className={`h-3.5 w-3.5 shrink-0 stroke-[1.75] ${
+                barSolid
+                  ? isAdminRoute
+                    ? 'text-[#007BFF]/55'
+                    : 'text-gray-600/50'
+                  : 'text-white/55'
+              }`}
+            />
+            Acesso restrito
+          </Link>
+
           {/* Cart — desktop */}
           <button
             onClick={() => openCart(true)}
-            className={`relative p-2 rounded-xl transition-colors ${scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}
+            className={`relative p-2 rounded-xl transition-colors ${barSolid ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}
             aria-label="Carrinho"
           >
             <CartIcon />
@@ -84,7 +122,7 @@ export default function Header() {
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={() => openCart(true)}
-            className={`relative p-2 rounded-xl transition-colors ${scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}
+            className={`relative p-2 rounded-xl transition-colors ${barSolid ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}
             aria-label="Carrinho"
           >
             <CartIcon />
@@ -96,7 +134,7 @@ export default function Header() {
           </button>
 
           <button
-            className={`p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-700' : 'text-white'}`}
+            className={`p-2 rounded-lg transition-colors ${barSolid ? 'text-gray-700' : 'text-white'}`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
           >
@@ -126,6 +164,21 @@ export default function Header() {
               {link.label}
             </a>
           ))}
+          <Link
+            to="/admin"
+            title="Acesso restrito — login"
+            onClick={() => setMenuOpen(false)}
+            className={`flex items-center gap-2 py-3.5 font-medium border-b border-gray-100 transition-colors ${
+              isAdminRoute ? 'text-[#007BFF] font-semibold' : 'text-gray-800 hover:text-[#007BFF]'
+            }`}
+          >
+            <LockIcon
+              className={`h-4 w-4 shrink-0 stroke-[1.75] ${
+                isAdminRoute ? 'text-[#007BFF]/50' : 'text-gray-400'
+              }`}
+            />
+            Acesso restrito
+          </Link>
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`}
             target="_blank"
@@ -138,6 +191,24 @@ export default function Header() {
         </div>
       )}
     </header>
+  )
+}
+
+function LockIcon({ className = '' }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+      />
+    </svg>
   )
 }
 
